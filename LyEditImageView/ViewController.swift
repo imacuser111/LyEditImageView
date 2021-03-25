@@ -8,13 +8,22 @@
 
 import UIKit
 
+protocol ViewControllerDelegate: class {
+    func getCropImage(image: UIImage)
+}
+
 class ViewController: UIViewController {
-    var image = UIImage()
+    let imagePickerController = UIImagePickerController()
     var type = 0
+    var editView: LyEditImageView?
+    weak var delegate: ViewControllerDelegate?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        // Do any additional setup after loading the view.
+        imagePickerController.delegate = self
+        openPhotoLibrary()
+        let frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y + 10, width: self.view.frame.width, height: self.view.frame.height)
+        editView = LyEditImageView(frame: frame)
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,20 +31,43 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        let frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y + 10, width: self.view.frame.width, height: self.view.frame.height)
-        let editView = LyEditImageView(frame: frame)
-        let image = self.image
-        editView.type = self.type
-        editView.initWithImage(image: image)
-        
-        self.view.addSubview(editView)
-        self.view.backgroundColor = UIColor.clear
-    }
-    
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
+}
 
+extension ViewController: LyEditImageViewDelegate {
+    func buttonAction(image: UIImage) {
+        delegate?.getCropImage(image: image)
+//        editView?.removeFromSuperview()
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+extension ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        // info 用來取得不同類型的圖片，此 Demo 的型態為 originaImage，其它型態有影片、修改過的圖片等等
+        if let image = info[.originalImage] as? UIImage {
+            editView?.delegate = self
+            let image = image
+            editView?.type = self.type
+            editView?.initWithImage(image: image)
+            
+            self.view.addSubview(editView ?? UIView())
+            self.view.backgroundColor = UIColor.clear
+        }
+        
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+        navigationController?.popViewController(animated: false)
+    }
+    
+    /// 開啟圖庫
+    func openPhotoLibrary() {
+        imagePickerController.sourceType = .photoLibrary
+        self.present(imagePickerController, animated: true)
+    }
 }

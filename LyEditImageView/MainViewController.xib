@@ -10,6 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController" customModule="LyEditImageView" customModuleProvider="target">
             <connections>
+                <outlet property="cropView" destination="bq9-7s-0ep" id="2Js-tj-aMp"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -34,8 +35,19 @@
                         <action selector="Btn:" destination="-1" eventType="touchUpInside" id="CcU-uw-dZv"/>
                     </connections>
                 </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bq9-7s-0ep">
+                    <rect key="frame" x="87" y="160" width="240" height="128"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="240" id="8wP-q2-6ge"/>
+                        <constraint firstAttribute="height" constant="128" id="MfG-gz-KTA"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+            <constraints>
+                <constraint firstItem="bq9-7s-0ep" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" multiplier="0.5" id="CW9-3E-hmR"/>
+                <constraint firstItem="bq9-7s-0ep" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="iE3-sV-da4"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <point key="canvasLocation" x="139" y="137"/>
         </view>

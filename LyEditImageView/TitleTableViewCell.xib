@@ -24,10 +24,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bfn-Fp-wYh">
-                        <rect key="frame" x="44" y="10" width="50" height="24"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="50" id="xpv-D5-o5g"/>
-                        </constraints>
+                        <rect key="frame" x="44" y="10" width="42" height="24"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
