@@ -169,7 +169,6 @@ extension MainViewController {
     @objc private func leftButtonTapped(_ button: UIBarButtonItem) {
         if status {
             status = !status
-//            setTopView(status)
         } else {
             sideMenuManager?.showSettings()
         }
