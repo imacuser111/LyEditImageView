@@ -24,7 +24,7 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     static let RIGHT_LINE_TAG = 1107
     static let DOWN_LINE_TAG = 1108
     
-    let INIT_CROP_VIEW_SIZE = 100
+    let INIT_CROP_VIEW_SIZE = 60
     let MINIMAL_CROP_VIEW_SIZE: CGFloat = 30.0
     let MINIMUM_ZOOM_SCALE: CGFloat = 1.0
     let MAXIMUM_ZOOM_SCALE: CGFloat = 8.0
@@ -40,8 +40,8 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     var imageView = UIImageView()
     var touchStartPoint: CGPoint!
     var originImageViewFrame: CGRect!
-    var imageZoomScale: CGFloat!
     fileprivate var cropView: CropView!
+    let cropButton = UIButton()
     
     var cropUpContraint: NSLayoutConstraint!
     var originalImageViewFrame: CGRect!
@@ -65,8 +65,6 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         // set gesture
         initGestureRecognizer()
         
-        initButton()
-        
         self.isMultipleTouchEnabled = true
     }
 
@@ -79,17 +77,33 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     }
     
     func initWithImage(image: UIImage) {
-        imageView.tag = IMAGE_VIEW_TAG;
+        initButton()
+        imageView.tag = IMAGE_VIEW_TAG
         self.addSubview(self.imageView)
-        imageView.isUserInteractionEnabled = true;
+        imageView.isUserInteractionEnabled = true
+        imageView.contentMode = .scaleAspectFit
         
         imageView.image = image
-        imageView.frame = CGRect(x: 0, y: 0, width: image.size.width, height: image.size.height);
-        let frame = AVMakeRect(aspectRatio: imageView.frame.size, insideRect: self.frame);
+        print(image.size)
+        let imageSize = CGSize(width: image.size.width, height: image.size.height)
+        var frame = AVMakeRect(aspectRatio: imageSize, insideRect: self.frame)
+        if frame.width > screenWidth {
+            imageView.image = image.resize(targetSize: CGSize(width: screenWidth, height: screenWidth / 0.75))
+            image.draw(in: CGRect(x: 0, y: 0, width: screenWidth, height: screenWidth / 0.75))
+            frame.size = imageView.image?.size ?? CGSize()
+        }
+        if frame.height + (screenHeight - frame.height) / 2 >= cropButton.frame.origin.y - 10 {
+            let imageViewHeight = frame.size.height / 4 * 3
+//            imageView.image = image.resize(targetSize: CGSize(width: (imageViewHeight / frame.size.height) * frame.width, height: imageViewHeight))
+            imageView.image = image.resize(targetSize: CGSize(width: (imageViewHeight / frame.size.height) * frame.width, height: imageViewHeight))
+            frame.size = imageView.image?.size ?? CGSize()
+        }
+        print(frame)
         imageView.frame = frame
-        originImageViewFrame = frame
+        imageView.center.x = self.center.x
+        imageView.center.y = self.center.y
+        originImageViewFrame = imageView.frame
         NSLog("initWithImage %@", NSCoder.string(for: originImageViewFrame))
-        imageZoomScale = 1.0
         commitInit()
     }
     
@@ -104,13 +118,12 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     }
 
     private func initCropView() {
-        
         cropView = CropView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         cropView.tag = CROP_VIEW_TAG;
         cropView.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(cropView)
 
-        cropRightMargin = (CGFloat)(originImageViewFrame.size.width / 2) - (CGFloat)(INIT_CROP_VIEW_SIZE / 2)
+        cropRightMargin = (CGFloat)(originImageViewFrame.size.width / 2) - (CGFloat)(INIT_CROP_VIEW_SIZE / 2) + (CGFloat)((screenWidth - originImageViewFrame.size.width) / 2)
         cropLeftMargin = cropRightMargin
         if type == 2 {
             cropTopMargin = (CGFloat)(originImageViewFrame.size.height / 2) - (CGFloat)(Double(INIT_CROP_VIEW_SIZE) / 2 / 3.125) + (CGFloat)((screenHeight - originImageViewFrame.size.height) / 2)
@@ -134,9 +147,11 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     }
     
     private func initButton() {
-        let cropButton = UIButton()
-        cropButton.frame = CGRect(x: screenWidth / 4 - 25, y: screenHeight - 100, width: 50, height: 50)
-        cropButton.setImage(UIImage(named: "accept.png"), for: UIControl.State.normal)
+        cropButton.frame = CGRect(x: 10, y: screenHeight - 100, width: screenWidth - 20, height: 50)
+        cropButton.setTitle("確定", for: .normal)
+        cropButton.setTitleColor(.black, for: .normal)
+        cropButton.layer.borderWidth = 2
+        cropButton.layer.cornerRadius = cropButton.frame.height / 10
         cropButton.addTarget(self, action: #selector(acceptButtonAction), for: .touchUpInside)
         self.addSubview(cropButton)
     }
@@ -160,6 +175,11 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         let tag:Int = cropView.getCropViewTag()
         let view = sender.view
         var translation = sender.translation(in: view?.superview)
+        
+        if cropView.leftLine.frame.height != cropView.upLine.frame.width {
+            print(cropView.leftLine.frame.height, cropView.upLine.frame.width)
+        }
+        
         switch tag {
         case LyEditImageView.LEFT_UP_TAG:
             //y偏移量+上方約束小於imageView.origin.y -> 超出圖片範圍，y偏移量 = imageView.origin.y - 上方約束，讓約束回到imageView範圍內
@@ -171,16 +191,16 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
                 translation.y = screenHeight - (cropTopMargin + cropBottomMargin) - MINIMAL_CROP_VIEW_SIZE;
             }
             //為了不要讓cropTopMargin在cropLeftMargin + translation.y <= imageView.frame.origin.x時繼續增加
-            if cropLeftMargin + translation.y <= imageView.frame.origin.x && cropLeftMargin > 0 {
+            if cropLeftMargin + translation.y <= imageView.frame.origin.x && cropLeftMargin > imageView.frame.origin.x {
                 if type == 2 {
-                    cropTopMargin! -= cropLeftMargin / 3.125
+                    cropTopMargin! -= (cropLeftMargin - imageView.frame.origin.x) / 3.125
                 } else {
-                    cropTopMargin! -= cropLeftMargin
+                    cropTopMargin! -= cropLeftMargin - imageView.frame.origin.x
                 }
                 cropLeftMargin! += translation.y
                 break
             }
-            if (cropTopMargin <= 0 || cropLeftMargin <= 0) && translation.y <= 0 {
+            if (cropLeftMargin <= imageView.frame.origin.x) && translation.y <= 0 {
                 break
             }
             if type == 2 {
@@ -200,16 +220,16 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
                 translation.x = -(MINIMAL_CROP_VIEW_SIZE - (screenHeight - (cropTopMargin + cropBottomMargin)))
             }
             //
-            if  cropLeftMargin + translation.x <= imageView.frame.origin.x && cropLeftMargin > 0 {
+            if  cropLeftMargin + translation.x <= imageView.frame.origin.x && cropLeftMargin > imageView.frame.origin.x {
                 if type == 2 {
-                    cropBottomMargin! -= cropLeftMargin / 3.125
+                    cropBottomMargin! -= (cropLeftMargin - imageView.frame.origin.x) / 3.125
                 } else {
-                    cropBottomMargin! -= cropLeftMargin
+                    cropBottomMargin! -= cropLeftMargin - imageView.frame.origin.x
                 }
                 cropLeftMargin! += translation.x
                 break
             }
-            if (cropLeftMargin <= 0 || cropBottomMargin <= 0) && translation.x <= 0 {
+            if (cropLeftMargin <= imageView.frame.origin.x || Int(cropBottomMargin) <= Int(imageView.frame.origin.y)) && translation.x <= 0 {
                 break
             }
             if type == 2 {
@@ -226,16 +246,16 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
             if screenHeight - (cropTopMargin + translation.y + cropBottomMargin) < MINIMAL_CROP_VIEW_SIZE {
                 translation.y = screenHeight - (cropTopMargin + cropBottomMargin) - MINIMAL_CROP_VIEW_SIZE;
             }
-            if  cropRightMargin + translation.y <= imageView.frame.origin.x && cropRightMargin > 0 {
+            if  cropRightMargin + translation.y <= imageView.frame.origin.x && cropRightMargin > imageView.frame.origin.x {
                 if type == 2 {
-                    cropTopMargin! -= cropRightMargin / 3.125
+                    cropTopMargin! -= (cropRightMargin - imageView.frame.origin.x) / 3.125
                 } else {
-                    cropTopMargin! -= cropRightMargin
+                    cropTopMargin! -= cropRightMargin - imageView.frame.origin.x
                 }
                 cropRightMargin! += translation.y
                 break
             }
-            if (cropRightMargin <= 0 || cropTopMargin <= 0) && translation.y <= 0 {
+            if (cropRightMargin <= imageView.frame.origin.x) && translation.y <= 0 {
                 break
             }
             if type == 2 {
@@ -253,16 +273,17 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
             if screenHeight - (cropTopMargin + cropBottomMargin - translation.y) < MINIMAL_CROP_VIEW_SIZE {
                 translation.x = MINIMAL_CROP_VIEW_SIZE - (screenHeight - (cropTopMargin + cropBottomMargin))
             }
-            if  cropRightMargin - translation.x <= 0 && cropRightMargin > 0 {
+            if  cropRightMargin - translation.x <= imageView.frame.origin.x && cropRightMargin > imageView.frame.origin.x {
                 if type == 2 {
-                    cropBottomMargin! -= cropRightMargin / 3.125
+                    cropBottomMargin! -= (cropRightMargin - imageView.frame.origin.x) / 3.125
                 } else {
-                    cropBottomMargin! -= cropRightMargin
+                    cropBottomMargin! -= cropRightMargin - imageView.frame.origin.x
                 }
                 cropRightMargin! -= translation.x
                 break
             }
-            if (cropRightMargin <= 0 || cropBottomMargin <= 0) && translation.x >= 0 {
+            
+            if (cropRightMargin <= imageView.frame.origin.x || Int(cropBottomMargin) <= Int(imageView.frame.origin.y)) && translation.x >= 0 {
                 break
             }
             if type == 2 {
@@ -277,18 +298,18 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
             break
         }
         
-        if cropLeftMargin <= 0 {
-            cropLeftMargin = 0;
+        if cropLeftMargin <= imageView.frame.origin.x {
+            cropLeftMargin = imageView.frame.origin.x
         }
-        if cropRightMargin < 0 {
-            cropRightMargin = 0;
+        if cropRightMargin < imageView.frame.origin.x {
+            cropRightMargin = imageView.frame.origin.x
         }
-        if cropTopMargin < 0 {
-            cropTopMargin = 0;
-        }
-        if cropBottomMargin < 0 {
-            cropBottomMargin = 0;
-        }
+//        if cropTopMargin < imageView.frame.origin.y {
+//            cropTopMargin = imageView.frame.origin.y
+//        }
+//        if cropBottomMargin < imageView.frame.origin.y {
+//            cropBottomMargin = imageView.frame.origin.y
+//        }
         
         updateCropViewLayout()
         // redraw overLayView after move cropView
@@ -337,7 +358,7 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         // change cropview's constraints
         self.removeConstraints(cropViewConstraints)
         let views = ["cropView":cropView!, "imageView":imageView] as [String : UIView]
-        let Hvfl = String(format: "H:|-%f-[cropView]-%f-|", cropLeftMargin, cropRightMargin);
+        let Hvfl = String(format: "H:|-%f-[cropView]-%f-|", cropLeftMargin, cropRightMargin)
         let Vvfl = String(format: "V:|-%f-[cropView]-%f-|", cropTopMargin, cropBottomMargin)
         let cropViewHorizentalConstraints = NSLayoutConstraint.constraints(withVisualFormat: Hvfl, options: [], metrics: nil, views: views)
         let cropViewVerticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: Vvfl, options: [], metrics: nil, views: views)
@@ -356,34 +377,25 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     }
     
     private func cropImage() {
+        guard let imageViewImage = imageView.image else { return }
+        guard let imageSize = imageView.image?.size else { return }
         let rect = self.convert(cropView.frame, to: imageView)
-        let imageSize = imageView.image?.size
-        let ratio = originImageViewFrame.size.width / (imageSize?.width)!
+        let ratio = originImageViewFrame.size.width / (imageSize.width)
         let zoomedRect = CGRect(x: rect.origin.x / ratio, y: rect.origin.y / ratio, width: rect.size.width / ratio, height: rect.size.height / ratio)
-        let croppedImage = cropImage(image: imageView.image!, toRect: zoomedRect)
+        let croppedImage = CropImage.shared.cropImage(image: imageViewImage, rect: zoomedRect)
     
         if type == 2 {
-            saveImage(currentImage: croppedImage, newSize: CGSize(width: 1050, height: 336), imageName: "test")
+            saveImage(currentImage: croppedImage, newSize: CGSize(width: 1050, height: 336))
         } else {
-            saveImage(currentImage: croppedImage, newSize: CGSize(width: 600, height: 600), imageName: "test")
+            saveImage(currentImage: croppedImage, newSize: CGSize(width: 600, height: 600))
         }
     }
-
-    private func cropImage(image: UIImage, toRect rect: CGRect) -> UIImage {
-        let imageRef = image.cgImage?.cropping(to: rect)
-        let croppedImage = UIImage(cgImage: imageRef!)
-        return croppedImage
-    }
     
-    private func saveImage(currentImage: UIImage, newSize: CGSize, imageName: String){
-        //壓縮圖片尺寸
-        UIGraphicsBeginImageContext(newSize)
-        currentImage.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
-
-        if let newImage = UIGraphicsGetImageFromCurrentImageContext() {
-            if let imageData = newImage.jpegData(compressionQuality: 1) {
-                delegate?.buttonAction(image: UIImage(data: imageData) ?? UIImage())
-            }
+    private func saveImage(currentImage: UIImage, newSize: CGSize) {
+        let newImage = currentImage.resize(targetSize: newSize)
+        
+        if let imageData = newImage.jpegData(compressionQuality: 1) {
+            delegate?.buttonAction(image: UIImage(data: imageData) ?? UIImage())
         }
     }
     

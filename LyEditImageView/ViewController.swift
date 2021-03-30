@@ -21,9 +21,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         imagePickerController.delegate = self
+        imagePickerController.modalPresentationStyle = .fullScreen
         openPhotoLibrary()
-        let frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y + 10, width: self.view.frame.width, height: self.view.frame.height)
-        editView = LyEditImageView(frame: frame)
+        editView = LyEditImageView(frame: view.frame)
     }
 
     override func didReceiveMemoryWarning() {

@@ -14,14 +14,19 @@
 		00E4CE571EEBA62C00F6153D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E4CE561EEBA62C00F6153D /* AppDelegate.swift */; };
 		00E4CE591EEBA62C00F6153D /* LyEditImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00E4CE581EEBA62C00F6153D /* LyEditImageView.swift */; };
 		00E4CE5C1EEBA62C00F6153D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00E4CE5A1EEBA62C00F6153D /* Main.storyboard */; };
-		00E4CE5E1EEBA62C00F6153D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00E4CE5D1EEBA62C00F6153D /* Assets.xcassets */; };
 		00E4CE611EEBA62C00F6153D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00E4CE5F1EEBA62C00F6153D /* LaunchScreen.storyboard */; };
 		00E4CE691EEBB40E00F6153D /* IMG_2796.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 00E4CE681EEBB40E00F6153D /* IMG_2796.JPG */; };
+		4622E3D42611AD0A004C5D55 /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622E3D32611AD0A004C5D55 /* Image+Extension.swift */; };
+		4622E3D72611AD2B004C5D55 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4622E3D62611AD2B004C5D55 /* View+Extension.swift */; };
 		464D7F2F260998FE00613F56 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464D7F2D260998FE00613F56 /* MainViewController.swift */; };
 		464D7F30260998FE00613F56 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464D7F2E260998FE00613F56 /* MainViewController.xib */; };
 		464D7F322609AFFF00613F56 /* CropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464D7F312609AFFF00613F56 /* CropView.swift */; };
 		464D7F39260AEB2700613F56 /* TitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 464D7F37260AEB2700613F56 /* TitleTableViewCell.swift */; };
 		464D7F3A260AEB2700613F56 /* TitleTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 464D7F38260AEB2700613F56 /* TitleTableViewCell.xib */; };
+		4688C1DB260D7BC4004E9BF6 /* SideMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688C1DA260D7BC4004E9BF6 /* SideMenuManager.swift */; };
+		4688C1DE260D7C7B004E9BF6 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688C1DD260D7C7B004E9BF6 /* MenuView.swift */; };
+		4688C1E7260D7CEA004E9BF6 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4688C1E6260D7CEA004E9BF6 /* MenuView.xib */; };
+		4688C1EC260D8500004E9BF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4688C1EB260D8500004E9BF6 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,15 +38,20 @@
 		00E4CE561EEBA62C00F6153D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00E4CE581EEBA62C00F6153D /* LyEditImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyEditImageView.swift; sourceTree = "<group>"; };
 		00E4CE5B1EEBA62C00F6153D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		00E4CE5D1EEBA62C00F6153D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		00E4CE601EEBA62C00F6153D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		00E4CE621EEBA62C00F6153D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E4CE681EEBB40E00F6153D /* IMG_2796.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_2796.JPG; sourceTree = "<group>"; };
+		4622E3D32611AD0A004C5D55 /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
+		4622E3D62611AD2B004C5D55 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
 		464D7F2D260998FE00613F56 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		464D7F2E260998FE00613F56 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		464D7F312609AFFF00613F56 /* CropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CropView.swift; sourceTree = "<group>"; };
 		464D7F37260AEB2700613F56 /* TitleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewCell.swift; sourceTree = "<group>"; };
 		464D7F38260AEB2700613F56 /* TitleTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleTableViewCell.xib; sourceTree = "<group>"; };
+		4688C1DA260D7BC4004E9BF6 /* SideMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuManager.swift; sourceTree = "<group>"; };
+		4688C1DD260D7C7B004E9BF6 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
+		4688C1E6260D7CEA004E9BF6 /* MenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
+		4688C1EB260D8500004E9BF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +69,9 @@
 			isa = PBXGroup;
 			children = (
 				00E4CE551EEBA62C00F6153D /* LyEditImageView */,
+				4688C1E1260D7C96004E9BF6 /* TitleTableView */,
+				4688C1E0260D7C85004E9BF6 /* Meun */,
+				4622E3D22611ACE9004C5D55 /* tool */,
 				00E4CE541EEBA62C00F6153D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,19 +92,45 @@
 				464D7F312609AFFF00613F56 /* CropView.swift */,
 				007392831EF10E7E004BAA12 /* ViewController.swift */,
 				00E4CE5A1EEBA62C00F6153D /* Main.storyboard */,
-				00E4CE5D1EEBA62C00F6153D /* Assets.xcassets */,
 				00E4CE5F1EEBA62C00F6153D /* LaunchScreen.storyboard */,
+				4688C1EB260D8500004E9BF6 /* Assets.xcassets */,
+				007392891EF15A7B004BAA12 /* rotate.png */,
 				00E4CE621EEBA62C00F6153D /* Info.plist */,
 				00E4CE681EEBB40E00F6153D /* IMG_2796.JPG */,
 				007392871EF15A7B004BAA12 /* accept.png */,
 				007392881EF15A7B004BAA12 /* cancel.png */,
-				007392891EF15A7B004BAA12 /* rotate.png */,
 				464D7F2D260998FE00613F56 /* MainViewController.swift */,
 				464D7F2E260998FE00613F56 /* MainViewController.xib */,
+			);
+			path = LyEditImageView;
+			sourceTree = "<group>";
+		};
+		4622E3D22611ACE9004C5D55 /* tool */ = {
+			isa = PBXGroup;
+			children = (
+				4622E3D62611AD2B004C5D55 /* View+Extension.swift */,
+				4622E3D32611AD0A004C5D55 /* Image+Extension.swift */,
+			);
+			path = tool;
+			sourceTree = "<group>";
+		};
+		4688C1E0260D7C85004E9BF6 /* Meun */ = {
+			isa = PBXGroup;
+			children = (
+				4688C1DA260D7BC4004E9BF6 /* SideMenuManager.swift */,
+				4688C1DD260D7C7B004E9BF6 /* MenuView.swift */,
+				4688C1E6260D7CEA004E9BF6 /* MenuView.xib */,
+			);
+			path = Meun;
+			sourceTree = "<group>";
+		};
+		4688C1E1260D7C96004E9BF6 /* TitleTableView */ = {
+			isa = PBXGroup;
+			children = (
 				464D7F37260AEB2700613F56 /* TitleTableViewCell.swift */,
 				464D7F38260AEB2700613F56 /* TitleTableViewCell.xib */,
 			);
-			path = LyEditImageView;
+			path = TitleTableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -158,8 +197,9 @@
 				464D7F3A260AEB2700613F56 /* TitleTableViewCell.xib in Resources */,
 				0073928C1EF15A7B004BAA12 /* rotate.png in Resources */,
 				00E4CE611EEBA62C00F6153D /* LaunchScreen.storyboard in Resources */,
-				00E4CE5E1EEBA62C00F6153D /* Assets.xcassets in Resources */,
 				464D7F30260998FE00613F56 /* MainViewController.xib in Resources */,
+				4688C1EC260D8500004E9BF6 /* Assets.xcassets in Resources */,
+				4688C1E7260D7CEA004E9BF6 /* MenuView.xib in Resources */,
 				0073928A1EF15A7B004BAA12 /* accept.png in Resources */,
 				0073928B1EF15A7B004BAA12 /* cancel.png in Resources */,
 				00E4CE5C1EEBA62C00F6153D /* Main.storyboard in Resources */,
@@ -175,10 +215,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				464D7F39260AEB2700613F56 /* TitleTableViewCell.swift in Sources */,
+				4688C1DE260D7C7B004E9BF6 /* MenuView.swift in Sources */,
 				007392841EF10E7E004BAA12 /* ViewController.swift in Sources */,
 				00E4CE591EEBA62C00F6153D /* LyEditImageView.swift in Sources */,
+				4622E3D42611AD0A004C5D55 /* Image+Extension.swift in Sources */,
+				4622E3D72611AD2B004C5D55 /* View+Extension.swift in Sources */,
 				00E4CE571EEBA62C00F6153D /* AppDelegate.swift in Sources */,
 				464D7F2F260998FE00613F56 /* MainViewController.swift in Sources */,
+				4688C1DB260D7BC4004E9BF6 /* SideMenuManager.swift in Sources */,
 				464D7F322609AFFF00613F56 /* CropView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -306,7 +350,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 436M5U47A4;
 				INFOPLIST_FILE = LyEditImageView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = LyEditImage.test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -320,7 +364,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 84A6Z2YQ4T;
 				INFOPLIST_FILE = LyEditImageView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = example.LyEditImageView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
