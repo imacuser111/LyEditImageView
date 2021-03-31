@@ -27,6 +27,11 @@
 		4688C1DE260D7C7B004E9BF6 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688C1DD260D7C7B004E9BF6 /* MenuView.swift */; };
 		4688C1E7260D7CEA004E9BF6 /* MenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4688C1E6260D7CEA004E9BF6 /* MenuView.xib */; };
 		4688C1EC260D8500004E9BF6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4688C1EB260D8500004E9BF6 /* Assets.xcassets */; };
+		CE12A37C2613184300B63934 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12A37B2613184300B63934 /* AlertView.swift */; };
+		CE12A37F2613186000B63934 /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE12A37E2613186000B63934 /* AlertView.xib */; };
+		CE12A38326131B6E00B63934 /* AlertCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12A38126131B6E00B63934 /* AlertCollectionViewCell.swift */; };
+		CE12A38426131B6E00B63934 /* AlertCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE12A38226131B6E00B63934 /* AlertCollectionViewCell.xib */; };
+		CE6EA1A62613FC5A00569788 /* TitleTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +57,11 @@
 		4688C1DD260D7C7B004E9BF6 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
 		4688C1E6260D7CEA004E9BF6 /* MenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuView.xib; sourceTree = "<group>"; };
 		4688C1EB260D8500004E9BF6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CE12A37B2613184300B63934 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		CE12A37E2613186000B63934 /* AlertView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
+		CE12A38126131B6E00B63934 /* AlertCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCollectionViewCell.swift; sourceTree = "<group>"; };
+		CE12A38226131B6E00B63934 /* AlertCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertCollectionViewCell.xib; sourceTree = "<group>"; };
+		CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,7 +81,8 @@
 				00E4CE551EEBA62C00F6153D /* LyEditImageView */,
 				4688C1E1260D7C96004E9BF6 /* TitleTableView */,
 				4688C1E0260D7C85004E9BF6 /* Meun */,
-				4622E3D22611ACE9004C5D55 /* tool */,
+				CE12A379261316CC00B63934 /* AlerView */,
+				4622E3D22611ACE9004C5D55 /* Tool */,
 				00E4CE541EEBA62C00F6153D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,13 +116,13 @@
 			path = LyEditImageView;
 			sourceTree = "<group>";
 		};
-		4622E3D22611ACE9004C5D55 /* tool */ = {
+		4622E3D22611ACE9004C5D55 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
 				4622E3D62611AD2B004C5D55 /* View+Extension.swift */,
 				4622E3D32611AD0A004C5D55 /* Image+Extension.swift */,
 			);
-			path = tool;
+			path = Tool;
 			sourceTree = "<group>";
 		};
 		4688C1E0260D7C85004E9BF6 /* Meun */ = {
@@ -127,10 +138,46 @@
 		4688C1E1260D7C96004E9BF6 /* TitleTableView */ = {
 			isa = PBXGroup;
 			children = (
+				CE6EA1A42613FC1B00569788 /* Model */,
+				CE6EA1A32613FC1300569788 /* View */,
+				CE6EA1A22613FC0200569788 /* Controller */,
+			);
+			path = TitleTableView;
+			sourceTree = "<group>";
+		};
+		CE12A379261316CC00B63934 /* AlerView */ = {
+			isa = PBXGroup;
+			children = (
+				CE12A37B2613184300B63934 /* AlertView.swift */,
+				CE12A37E2613186000B63934 /* AlertView.xib */,
+				CE12A38126131B6E00B63934 /* AlertCollectionViewCell.swift */,
+				CE12A38226131B6E00B63934 /* AlertCollectionViewCell.xib */,
+			);
+			path = AlerView;
+			sourceTree = "<group>";
+		};
+		CE6EA1A22613FC0200569788 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CE6EA1A32613FC1300569788 /* View */ = {
+			isa = PBXGroup;
+			children = (
 				464D7F37260AEB2700613F56 /* TitleTableViewCell.swift */,
 				464D7F38260AEB2700613F56 /* TitleTableViewCell.xib */,
 			);
-			path = TitleTableView;
+			path = View;
+			sourceTree = "<group>";
+		};
+		CE6EA1A42613FC1B00569788 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,7 +250,9 @@
 				0073928A1EF15A7B004BAA12 /* accept.png in Resources */,
 				0073928B1EF15A7B004BAA12 /* cancel.png in Resources */,
 				00E4CE5C1EEBA62C00F6153D /* Main.storyboard in Resources */,
+				CE12A37F2613186000B63934 /* AlertView.xib in Resources */,
 				00E4CE691EEBB40E00F6153D /* IMG_2796.JPG in Resources */,
+				CE12A38426131B6E00B63934 /* AlertCollectionViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +265,9 @@
 			files = (
 				464D7F39260AEB2700613F56 /* TitleTableViewCell.swift in Sources */,
 				4688C1DE260D7C7B004E9BF6 /* MenuView.swift in Sources */,
+				CE6EA1A62613FC5A00569788 /* TitleTableViewModel.swift in Sources */,
 				007392841EF10E7E004BAA12 /* ViewController.swift in Sources */,
+				CE12A37C2613184300B63934 /* AlertView.swift in Sources */,
 				00E4CE591EEBA62C00F6153D /* LyEditImageView.swift in Sources */,
 				4622E3D42611AD0A004C5D55 /* Image+Extension.swift in Sources */,
 				4622E3D72611AD2B004C5D55 /* View+Extension.swift in Sources */,
@@ -224,6 +275,7 @@
 				464D7F2F260998FE00613F56 /* MainViewController.swift in Sources */,
 				4688C1DB260D7BC4004E9BF6 /* SideMenuManager.swift in Sources */,
 				464D7F322609AFFF00613F56 /* CropView.swift in Sources */,
+				CE12A38326131B6E00B63934 /* AlertCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

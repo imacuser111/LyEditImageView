@@ -94,7 +94,6 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         }
         if frame.height + (screenHeight - frame.height) / 2 >= cropButton.frame.origin.y - 10 {
             let imageViewHeight = frame.size.height / 4 * 3
-//            imageView.image = image.resize(targetSize: CGSize(width: (imageViewHeight / frame.size.height) * frame.width, height: imageViewHeight))
             imageView.image = image.resize(targetSize: CGSize(width: (imageViewHeight / frame.size.height) * frame.width, height: imageViewHeight))
             frame.size = imageView.image?.size ?? CGSize()
         }
