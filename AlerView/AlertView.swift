@@ -31,7 +31,7 @@ extension AlertView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     func setCollectionView() {
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UINib(nibName: "AlertCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "AlertCollectionViewCell")
+        collectionView.register(AlertCollectionViewCell.loadFromNib(), forCellWithReuseIdentifier: "AlertCollectionViewCell")
         viewHeight.constant = CGFloat(60 * tableViewTitle.allCases.count)
     }
 
@@ -46,8 +46,7 @@ extension AlertView: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AlertCollectionViewCell", for: indexPath) as! AlertCollectionViewCell
         let index = tableViewTitle(rawValue: indexPath.row)
-        cell.collectionViewImage.image = #imageLiteral(resourceName: "accept.png")
-        cell.label.text = index?.title.0
+        cell.titleTableViewCellModel = TitleTableViewCellModel(labelText: index?.title.0 ?? "", image: index?.title.1 ?? "")
         return cell
     }
 }

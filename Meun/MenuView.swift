@@ -23,7 +23,7 @@ extension MenuView: UITableViewDelegate, UITableViewDataSource {
         tableView.dataSource = self
 //        tableView.isHidden = true
         tableView.backgroundColor = .clear
-        tableView.register(UINib(nibName: "TitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TitleTableViewCell")
+        tableView.register(TitleTableViewCell.loadFromNib(), forCellReuseIdentifier: "TitleTableViewCell")
 //        tableView.isScrollEnabled = false
         //禁止滑動
 //        tableView.alwaysBounceVertical = false
@@ -36,9 +36,9 @@ extension MenuView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TitleTableViewCell") as! TitleTableViewCell
         let index = tableViewTitle(rawValue: indexPath.row)
+        cell.titleTableViewCellModel = TitleTableViewCellModel(labelText: index?.title.0 ?? "", image: index?.title.1 ?? "")
         cell.selectionStyle = .none
-        cell.tableViewImage.image = #imageLiteral(resourceName: "accept.png")
-        cell.label.text = index?.title.0
+        
         return cell
     }
     

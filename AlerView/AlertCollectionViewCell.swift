@@ -12,6 +12,12 @@ class AlertCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var collectionViewImage: UIImageView!
     @IBOutlet weak var label: UILabel!
+    var titleTableViewCellModel: TitleTableViewCellModel? {
+        didSet {
+            collectionViewImage.image = UIImage(named: titleTableViewCellModel?.image ?? "")
+            label.text = titleTableViewCellModel?.labelText
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()

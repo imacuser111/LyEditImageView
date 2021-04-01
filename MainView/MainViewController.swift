@@ -11,11 +11,12 @@ import UIKit
 class MainViewController: UIViewController {
     let tableView = UITableView()
     @IBOutlet weak var cropView: UIImageView!
-    var type = 0
-    var status = false
     private var sideMenuManager: SideMenuManager?
     private let meunViewController = MenuView.initFromNib()
     private let alertView = AlertView.initFromNib()
+    lazy var viewModel: MainViewModel = {
+        return MainViewModel()
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,7 +30,12 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         //關閉透明
         navigationController?.navigationBar.isTranslucent = false
+        //layout包含不透明的bar
         extendedLayoutIncludesOpaqueBars = true
+    }
+    
+    func initVM() {
+        
     }
     
     func addNavBarButton() {
@@ -45,7 +51,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func buttonTap() {
-        if !status {
+        if !viewModel.status {
             UIView.animate(withDuration: 0.3, animations: {
                 self.tableView.frame = self.view.frame
             }, completion: { _ in
@@ -57,11 +63,11 @@ class MainViewController: UIViewController {
                 self.tableView.frame = CGRect(x: 0, y: -(self.view.frame.height), width: self.view.frame.width, height: self.view.frame.height)
             })
         }
-        status.toggle()
+        viewModel.status.toggle()
     }
     
     @IBAction func button(_ sender: Any) {
-        let vc = ViewController()
+        let vc = LyEditImageViewController()
         vc.type = 1
         vc.delegate = self
         vc.imagePickerController.modalPresentationStyle = .fullScreen
@@ -69,8 +75,9 @@ class MainViewController: UIViewController {
         extendedLayoutIncludesOpaqueBars = false
         navigationController?.pushViewController(vc, animated: false)
     }
+    
     @IBAction func Btn(_ sender: Any) {
-        let vc = ViewController()
+        let vc = LyEditImageViewController()
         vc.type = 2
         vc.delegate = self
         navigationController?.navigationBar.isTranslucent = true
@@ -86,7 +93,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.frame = CGRect(x: 0, y: -(view.frame.height), width: view.frame.width, height: view.frame.height)
 //        tableView.isHidden = true
         tableView.backgroundColor = .clear
-        tableView.register(UINib(nibName: "TitleTableViewCell", bundle: nil), forCellReuseIdentifier: "TitleTableViewCell")
+        tableView.register(TitleTableViewCell.loadFromNib(), forCellReuseIdentifier: "TitleTableViewCell")
 //        tableView.isScrollEnabled = false
         //禁止滑動
         tableView.alwaysBounceVertical = false
@@ -101,8 +108,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TitleTableViewCell") as! TitleTableViewCell
         let index = tableViewTitle(rawValue: indexPath.row)
         cell.selectionStyle = .none
-        cell.tableViewImage.image = #imageLiteral(resourceName: "accept.png")
-        cell.label.text = index?.title.0
+        cell.titleTableViewCellModel = TitleTableViewCellModel(labelText: index?.title.0 ?? "", image: index?.title.1 ?? "")
         return cell
     }
     
@@ -141,8 +147,8 @@ extension MainViewController {
     }
     
     @objc private func leftButtonTapped(_ button: UIBarButtonItem) {
-        if status {
-            status = !status
+        if viewModel.status {
+            viewModel.status = !viewModel.status
         } else {
             sideMenuManager?.showSettings()
         }

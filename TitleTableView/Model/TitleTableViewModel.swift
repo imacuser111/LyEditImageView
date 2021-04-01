@@ -13,25 +13,30 @@ enum tableViewTitle: Int, CaseIterable {
     var title: (String, String) {
         switch self {
         case .all:
-            return ("全部", "icon_57")
+            return ("全部", "cancel.png")
         case .creat:
-            return ("創建", "icon_54")
+            return ("創建", "cancel.png")
         case .outPut:
-            return ("移出", "icon_55")
+            return ("移出", "cancel.png")
         case .into:
-            return ("移入", "icon_56")
+            return ("移入", "cancel.png")
         case .upload:
-            return ("上架", "icon_56")
+            return ("上架", "cancel.png")
         case .download:
-            return ("下架", "icon_56")
+            return ("下架", "cancel.png")
         case .shopOutPut:
-            return ("市集移出", "icon_56")
+            return ("市集移出", "cancel.png")
         case .shopInto:
-            return ("市集移入", "icon_56")
+            return ("市集移入", "cancel.png")
         case .delete:
-            return ("已丟棄", "icon_56")
+            return ("已丟棄", "cancel.png")
         case .use:
-            return("使用", "icon_56")
+            return("使用", "cancel.png")
         }
     }
+}
+
+struct TitleTableViewCellModel {
+    let labelText: String
+    let image: String
 }

@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		007392841EF10E7E004BAA12 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007392831EF10E7E004BAA12 /* ViewController.swift */; };
+		007392841EF10E7E004BAA12 /* LyEditImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 007392831EF10E7E004BAA12 /* LyEditImageViewController.swift */; };
 		0073928A1EF15A7B004BAA12 /* accept.png in Resources */ = {isa = PBXBuildFile; fileRef = 007392871EF15A7B004BAA12 /* accept.png */; };
 		0073928B1EF15A7B004BAA12 /* cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 007392881EF15A7B004BAA12 /* cancel.png */; };
 		0073928C1EF15A7B004BAA12 /* rotate.png in Resources */ = {isa = PBXBuildFile; fileRef = 007392891EF15A7B004BAA12 /* rotate.png */; };
@@ -32,10 +32,12 @@
 		CE12A38326131B6E00B63934 /* AlertCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE12A38126131B6E00B63934 /* AlertCollectionViewCell.swift */; };
 		CE12A38426131B6E00B63934 /* AlertCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE12A38226131B6E00B63934 /* AlertCollectionViewCell.xib */; };
 		CE6EA1A62613FC5A00569788 /* TitleTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */; };
+		CE6EA1BC26144EAF00569788 /* LyEditImageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EA1BB26144EAF00569788 /* LyEditImageViewModel.swift */; };
+		CE6EA1C526145BE600569788 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6EA1C426145BE600569788 /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		007392831EF10E7E004BAA12 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		007392831EF10E7E004BAA12 /* LyEditImageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyEditImageViewController.swift; sourceTree = "<group>"; };
 		007392871EF15A7B004BAA12 /* accept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = accept.png; sourceTree = "<group>"; };
 		007392881EF15A7B004BAA12 /* cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cancel.png; sourceTree = "<group>"; };
 		007392891EF15A7B004BAA12 /* rotate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rotate.png; sourceTree = "<group>"; };
@@ -62,6 +64,8 @@
 		CE12A38126131B6E00B63934 /* AlertCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertCollectionViewCell.swift; sourceTree = "<group>"; };
 		CE12A38226131B6E00B63934 /* AlertCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AlertCollectionViewCell.xib; sourceTree = "<group>"; };
 		CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleTableViewModel.swift; sourceTree = "<group>"; };
+		CE6EA1BB26144EAF00569788 /* LyEditImageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LyEditImageViewModel.swift; sourceTree = "<group>"; };
+		CE6EA1C426145BE600569788 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				00E4CE551EEBA62C00F6153D /* LyEditImageView */,
+				CE6EA1C126145B1B00569788 /* MainView */,
 				4688C1E1260D7C96004E9BF6 /* TitleTableView */,
 				4688C1E0260D7C85004E9BF6 /* Meun */,
 				CE12A379261316CC00B63934 /* AlerView */,
@@ -98,10 +103,11 @@
 		00E4CE551EEBA62C00F6153D /* LyEditImageView */ = {
 			isa = PBXGroup;
 			children = (
+				CE6EA1BA26144E6800569788 /* Model */,
 				00E4CE561EEBA62C00F6153D /* AppDelegate.swift */,
 				00E4CE581EEBA62C00F6153D /* LyEditImageView.swift */,
 				464D7F312609AFFF00613F56 /* CropView.swift */,
-				007392831EF10E7E004BAA12 /* ViewController.swift */,
+				007392831EF10E7E004BAA12 /* LyEditImageViewController.swift */,
 				00E4CE5A1EEBA62C00F6153D /* Main.storyboard */,
 				00E4CE5F1EEBA62C00F6153D /* LaunchScreen.storyboard */,
 				4688C1EB260D8500004E9BF6 /* Assets.xcassets */,
@@ -110,8 +116,6 @@
 				00E4CE681EEBB40E00F6153D /* IMG_2796.JPG */,
 				007392871EF15A7B004BAA12 /* accept.png */,
 				007392881EF15A7B004BAA12 /* cancel.png */,
-				464D7F2D260998FE00613F56 /* MainViewController.swift */,
-				464D7F2E260998FE00613F56 /* MainViewController.xib */,
 			);
 			path = LyEditImageView;
 			sourceTree = "<group>";
@@ -176,6 +180,32 @@
 			isa = PBXGroup;
 			children = (
 				CE6EA1A52613FC5A00569788 /* TitleTableViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE6EA1BA26144E6800569788 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE6EA1BB26144EAF00569788 /* LyEditImageViewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE6EA1C126145B1B00569788 /* MainView */ = {
+			isa = PBXGroup;
+			children = (
+				CE6EA1C226145B3D00569788 /* Model */,
+				464D7F2D260998FE00613F56 /* MainViewController.swift */,
+				464D7F2E260998FE00613F56 /* MainViewController.xib */,
+			);
+			path = MainView;
+			sourceTree = "<group>";
+		};
+		CE6EA1C226145B3D00569788 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE6EA1C426145BE600569788 /* MainViewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -266,14 +296,16 @@
 				464D7F39260AEB2700613F56 /* TitleTableViewCell.swift in Sources */,
 				4688C1DE260D7C7B004E9BF6 /* MenuView.swift in Sources */,
 				CE6EA1A62613FC5A00569788 /* TitleTableViewModel.swift in Sources */,
-				007392841EF10E7E004BAA12 /* ViewController.swift in Sources */,
+				007392841EF10E7E004BAA12 /* LyEditImageViewController.swift in Sources */,
 				CE12A37C2613184300B63934 /* AlertView.swift in Sources */,
+				CE6EA1C526145BE600569788 /* MainViewModel.swift in Sources */,
 				00E4CE591EEBA62C00F6153D /* LyEditImageView.swift in Sources */,
 				4622E3D42611AD0A004C5D55 /* Image+Extension.swift in Sources */,
 				4622E3D72611AD2B004C5D55 /* View+Extension.swift in Sources */,
 				00E4CE571EEBA62C00F6153D /* AppDelegate.swift in Sources */,
 				464D7F2F260998FE00613F56 /* MainViewController.swift in Sources */,
 				4688C1DB260D7BC4004E9BF6 /* SideMenuManager.swift in Sources */,
+				CE6EA1BC26144EAF00569788 /* LyEditImageViewModel.swift in Sources */,
 				464D7F322609AFFF00613F56 /* CropView.swift in Sources */,
 				CE12A38326131B6E00B63934 /* AlertCollectionViewCell.swift in Sources */,
 			);

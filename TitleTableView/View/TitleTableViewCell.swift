@@ -11,6 +11,12 @@ import UIKit
 class TitleTableViewCell: UITableViewCell {
     @IBOutlet weak var tableViewImage: UIImageView!
     @IBOutlet weak var label: UILabel!
+    var titleTableViewCellModel: TitleTableViewCellModel? {
+        didSet {
+            tableViewImage.image = UIImage(named: titleTableViewCellModel?.image ?? "")
+            label.text = titleTableViewCellModel?.labelText
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
