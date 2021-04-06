@@ -135,17 +135,6 @@ extension MainViewController {
         self.navigationItem.leftBarButtonItem = menuBarItem
     }
     
-    
-    func initSideMenu() {
-        let menuButton = UIBarButtonItem(image: UIImage(named: "rotate")?.withRenderingMode(.alwaysOriginal),
-                                         style: .done,
-                                         target: self,
-                                         action: #selector(leftButtonTapped(_:)))
-//        menuButton.tintColor = .white
-        navigationItem.leftBarButtonItem = menuButton
-        sideMenuManager = SideMenuManager(menuView: meunViewController, targetView: view)
-    }
-    
     @objc private func leftButtonTapped(_ button: UIBarButtonItem) {
         if viewModel.status {
             viewModel.status = !viewModel.status
@@ -153,7 +142,6 @@ extension MainViewController {
             sideMenuManager?.showSettings()
         }
     }
-    
 }
 
 extension MainViewController: ViewControllerDelegate {
