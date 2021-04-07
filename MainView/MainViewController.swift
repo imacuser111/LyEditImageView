@@ -9,9 +9,9 @@
 import UIKit
 
 class MainViewController: UIViewController {
-    let tableView = UITableView()
     @IBOutlet weak var cropView: UIImageView!
     private var sideMenuManager: SideMenuManager?
+    private let titleTableView = TitleTableView()
     private let meunViewController = MenuView.initFromNib()
     private let alertView = AlertView.initFromNib()
     lazy var viewModel: MainViewModel = {
@@ -38,34 +38,6 @@ class MainViewController: UIViewController {
         
     }
     
-    func addNavBarButton() {
-        let titleView = UIView(frame: CGRect(x: 0, y: 0, width: (navigationController?.navigationBar.frame.width ?? 0) / 2, height: navigationController?.navigationBar.frame.height ?? 0))
-        let button = UIButton(frame: CGRect(x: 0, y: 0, width: titleView.frame.width, height: titleView.frame.height))
-        button.center.x = titleView.center.x
-        button.setTitle("Button", for: .normal)
-        button.backgroundColor = .lightGray
-        button.addTarget(self, action: #selector(buttonTap), for: .touchUpInside)
-        
-        titleView.addSubview(button)
-        self.navigationItem.titleView = titleView
-    }
-    
-    @objc func buttonTap() {
-        if !viewModel.status {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.tableView.frame = self.view.frame
-            }, completion: { _ in
-                self.tableView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-            })
-        } else {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.tableView.backgroundColor = .clear
-                self.tableView.frame = CGRect(x: 0, y: -(self.view.frame.height), width: self.view.frame.width, height: self.view.frame.height)
-            })
-        }
-        viewModel.status.toggle()
-    }
-    
     @IBAction func button(_ sender: Any) {
         let vc = LyEditImageViewController(type: 0)
         vc.delegate = self
@@ -84,62 +56,52 @@ class MainViewController: UIViewController {
     }
 }
 
-extension MainViewController: UITableViewDelegate, UITableViewDataSource {
+extension MainViewController: TitleViewItemDelegate {
+    func addNavBarButton() {
+        let titleViewItem = TitleViewItem(frame: CGRect(x: 0, y: 0, width: view.frame.width / 4, height: navigationController?.navigationBar.frame.width ?? 0))
+        titleViewItem.delegate = self
+        self.navigationItem.titleView = titleViewItem
+    }
+    
     func initTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.frame = CGRect(x: 0, y: -(view.frame.height), width: view.frame.width, height: view.frame.height)
-//        tableView.isHidden = true
-        tableView.backgroundColor = .clear
-        tableView.register(TitleTableViewCell.loadFromNib(), forCellReuseIdentifier: "TitleTableViewCell")
-//        tableView.isScrollEnabled = false
-        //禁止滑動
-        tableView.alwaysBounceVertical = false
-        view.addSubview(tableView)
+        titleTableView.frame = CGRect(x: 0, y: -(view.frame.height), width: view.frame.width, height: view.frame.height)
+        view.addSubview(titleTableView)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableViewTitle.allCases.count
+    func buttonTap() {
+        if !viewModel.status {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.titleTableView.frame = self.view.frame
+            }, completion: { _ in
+                self.titleTableView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+            })
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.titleTableView.backgroundColor = .clear
+                self.titleTableView.frame = CGRect(x: 0, y: -(self.view.frame.height), width: self.view.frame.width, height: self.view.frame.height)
+            })
+        }
+        viewModel.status.toggle()
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TitleTableViewCell") as! TitleTableViewCell
-        let index = tableViewTitle(rawValue: indexPath.row)
-        cell.selectionStyle = .none
-        cell.titleTableViewCellModel = TitleTableViewCellModel(labelText: index?.title.0 ?? "", image: index?.title.1 ?? "")
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-    
 }
 
 //sideMenuManager
-extension MainViewController {
+extension MainViewController: MenuItemDelegate {
     func setUpMenuButton() {
         sideMenuManager = SideMenuManager(menuView: meunViewController, targetView: view)
-        let menuBtn = UIButton(type: .custom)
-        menuBtn.frame = CGRect(x: 0.0, y: 0.0, width: 30, height: 30)
-        menuBtn.setImage(UIImage(named:"rotate"), for: .normal)
-        menuBtn.addTarget(self, action: #selector(leftButtonTapped), for: .touchUpInside)
-
-        let menuBarItem = UIBarButtonItem(customView: menuBtn)
-        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 30)
-        currWidth?.isActive = true
-        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 30)
-        currHeight?.isActive = true
-        self.navigationItem.leftBarButtonItem = menuBarItem
+        let menuBarButtonItem = MenuBarButtonItem()
+        menuBarButtonItem.delegate = self
+        self.navigationItem.leftBarButtonItem = menuBarButtonItem
     }
     
-    @objc private func leftButtonTapped(_ button: UIBarButtonItem) {
+    func leftButtonTapped() {
         if viewModel.status {
             viewModel.status = !viewModel.status
         } else {
             sideMenuManager?.showSettings()
         }
     }
+    
 }
 
 extension MainViewController: ViewControllerDelegate {
@@ -148,23 +110,14 @@ extension MainViewController: ViewControllerDelegate {
     }
 }
 
-extension MainViewController {
+extension MainViewController: RightBarButtonItemDelegate {
     func initAlertButton() {
-        let button = UIButton()
-        button.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-        button.backgroundColor = .red
-        button.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
-        
-        let menuBarItem = UIBarButtonItem(customView: button)
-        let currWidth = menuBarItem.customView?.widthAnchor.constraint(equalToConstant: 30)
-        currWidth?.isActive = true
-        let currHeight = menuBarItem.customView?.heightAnchor.constraint(equalToConstant: 30)
-        currHeight?.isActive = true
-        
-        navigationItem.rightBarButtonItem = menuBarItem
+        let rightBarButtonItem = RightBarButtonItem()
+        rightBarButtonItem.delegate = self
+        navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    @objc func showAlert() {
+    func rightButtonTapped() {
         if !alertView.status {
             self.view.addSubview(alertView)
         } else {

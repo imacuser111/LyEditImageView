@@ -11,8 +11,8 @@ import UIKit
 class SideMenuManager: NSObject {
     
     private var width: CGFloat = (UIApplication.shared.keyWindow?.frame.width)! * 0.65
-    private var menuView: UIView!
-    private var tagetView: UIView!
+    private var menuView: UIView?
+    private var tagetView: UIView = UIView()
     lazy var blackView: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor(white: 0, alpha: 0.5)
@@ -42,7 +42,7 @@ class SideMenuManager: NSObject {
         UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             
             self.blackView.alpha = 1
-            self.menuView.frame.origin = CGPoint(x: 0, y: 0)
+            self.menuView?.frame.origin = CGPoint(x: 0, y: 0)
         }, completion: nil)
     }
     
@@ -50,7 +50,7 @@ class SideMenuManager: NSObject {
         UIView.animate(withDuration: 0.25
             , animations: {
                 self.blackView.alpha = 0
-                self.menuView.frame.origin = CGPoint(x: -self.width, y: 0)
+                self.menuView?.frame.origin = CGPoint(x: -self.width, y: 0)
         }) { (_) in
             
         }
@@ -76,7 +76,7 @@ extension SideMenuManager {
             var x = 0 + gesture.translation(in: blackView).x
             x = x < -width ? -width : x
             x = x > 0 ? 0 : x
-            menuView.frame.origin = CGPoint(x: x, y: 0)
+            menuView?.frame.origin = CGPoint(x: x, y: 0)
             blackView.alpha = 1 + (x / width)
         case .ended:
             if gesture.velocity(in: blackView).x < -50 || gesture.translation(in: blackView).x < -width * 0.5 {
@@ -104,7 +104,7 @@ extension SideMenuManager {
             var x = -width + gesture.translation(in: tagetView).x
             x = x > 0 ? 0 : x
             x = x < -width ? -width : x
-            self.menuView.frame.origin = CGPoint(x: x, y: 0)
+            self.menuView?.frame.origin = CGPoint(x: x, y: 0)
             self.blackView.alpha = 1 + (x / width)
         case .ended:
             if gesture.velocity(in: tagetView).x > 50 || gesture.translation(in: tagetView).x > width * 0.5 {
