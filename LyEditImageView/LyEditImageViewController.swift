@@ -14,9 +14,19 @@ protocol ViewControllerDelegate: class {
 
 class LyEditImageViewController: UIViewController {
     let imagePickerController = UIImagePickerController()
-    var type = 0
+    private let type: Int
     var editView: LyEditImageView?
     weak var delegate: ViewControllerDelegate?
+    
+    init(type: Int) {
+        self.type = type
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //關閉手勢返回功能
@@ -24,7 +34,7 @@ class LyEditImageViewController: UIViewController {
         imagePickerController.delegate = self
         imagePickerController.modalPresentationStyle = .fullScreen
         openPhotoLibrary()
-        editView = LyEditImageView(frame: view.frame)
+        editView = LyEditImageView(frame: view.frame, type: type)
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,7 +60,6 @@ extension LyEditImageViewController: UIImagePickerControllerDelegate, UINavigati
         if let image = info[.originalImage] as? UIImage {
             editView?.delegate = self
             let image = image
-            editView?.type = self.type
             editView?.initWithImage(image: image)
             
             self.view.addSubview(editView ?? UIView())

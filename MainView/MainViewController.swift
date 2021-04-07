@@ -67,8 +67,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func button(_ sender: Any) {
-        let vc = LyEditImageViewController()
-        vc.type = 1
+        let vc = LyEditImageViewController(type: 0)
         vc.delegate = self
         vc.imagePickerController.modalPresentationStyle = .fullScreen
         navigationController?.navigationBar.isTranslucent = true
@@ -77,8 +76,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func Btn(_ sender: Any) {
-        let vc = LyEditImageViewController()
-        vc.type = 2
+        let vc = LyEditImageViewController(type: 1)
         vc.delegate = self
         navigationController?.navigationBar.isTranslucent = true
         extendedLayoutIncludesOpaqueBars = false

@@ -11,26 +11,64 @@ import UIKit
 class CropView: UIView {
     
     let LINE_WIDTH:CGFloat = 2
-
-    var leftUpCornerPoint:UIView!
-    var leftDownCornerPoint:UIView!
-    var rightUpCornerPoint:UIView!
-    var rightDownCornerPoint:UIView!
-    
-    var leftLine:UIView!
-    var upLine:UIView!
-    var rightLine:UIView!
-    var downLine:UIView!
-    
     var hittedViewTag: Int?
+
+    var leftUpCornerPoint: UIView = {
+        let leftUpCornerPoint = UIView()
+        leftUpCornerPoint.backgroundColor = UIColor.white
+        leftUpCornerPoint.tag = LyEditImageViewTag.LEFT_UP_TAG.rawValue
+        return leftUpCornerPoint
+    }()
+    var leftDownCornerPoint: UIView = {
+        let leftDownCornerPoint = UIView()
+        leftDownCornerPoint.backgroundColor = UIColor.white
+        leftDownCornerPoint.tag = LyEditImageViewTag.LEFT_DOWN_TAG.rawValue
+        return leftDownCornerPoint
+    }()
+    var rightUpCornerPoint: UIView = {
+        let rightUpCornerPoint = UIView()
+        rightUpCornerPoint.backgroundColor = UIColor.white
+        rightUpCornerPoint.tag = LyEditImageViewTag.RIGHT_UP_TAG.rawValue
+        return rightUpCornerPoint
+    }()
+    var rightDownCornerPoint: UIView = {
+        let rightDownCornerPoint = UIView()
+        rightDownCornerPoint.backgroundColor = UIColor.white
+        rightDownCornerPoint.tag = LyEditImageViewTag.RIGHT_DOWN_TAG.rawValue
+        return rightDownCornerPoint
+    }()
     
+    var leftLine: UIView = {
+        let leftLine = UIView()
+        leftLine.backgroundColor = UIColor.white
+        leftLine.tag = LyEditImageViewTag.LEFT_LINE_TAG.rawValue
+        return leftLine
+    }()
+    var upLine: UIView = {
+        let upLine = UIView()
+        upLine.backgroundColor = UIColor.white
+        upLine.tag = LyEditImageViewTag.UP_LINE_TAG.rawValue
+        return upLine
+    }()
+    var rightLine: UIView = {
+        let rightLine = UIView()
+        rightLine.backgroundColor = UIColor.white
+        rightLine.tag = LyEditImageViewTag.RIGHT_LINE_TAG.rawValue
+        return rightLine
+    }()
+    var downLine: UIView = {
+        let downLine = UIView()
+        downLine.backgroundColor = UIColor.white
+        downLine.tag = LyEditImageViewTag.DOWN_LINE_TAG.rawValue
+        return downLine
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.isUserInteractionEnabled = true;
+        self.isUserInteractionEnabled = true
         self.backgroundColor = UIColor.clear
-        self.clipsToBounds = false;
-        self.frame = frame;
+        self.clipsToBounds = false
+        self.frame = frame
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,53 +76,29 @@ class CropView: UIView {
     }
     
     func initCropViewSubViews() {
-        leftLine = UIView();
-        leftLine.frame = CGRect(x: 0, y: 0, width: LINE_WIDTH, height: self.frame.size.height);
-        leftLine.backgroundColor = UIColor.white;
-        self.addSubview(leftLine);
-        leftLine.tag = LyEditImageViewTag.LEFT_LINE_TAG.rawValue
+        leftLine.frame = CGRect(x: 0, y: 0, width: LINE_WIDTH, height: self.frame.size.height)
+        self.addSubview(leftLine)
         
-        upLine = UIView();
-        upLine.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: LINE_WIDTH);
-        upLine.backgroundColor = UIColor.white;
-        self.addSubview(upLine);
-        upLine.tag = LyEditImageViewTag.UP_LINE_TAG.rawValue
+        upLine.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: LINE_WIDTH)
+        self.addSubview(upLine)
         
-        rightLine = UIView();
-        rightLine.frame = CGRect(x: self.frame.size.width - LINE_WIDTH, y: 0, width: LINE_WIDTH, height: self.frame.size.height);
-        rightLine.backgroundColor = UIColor.white;
-        self.addSubview(rightLine);
-        rightLine.tag = LyEditImageViewTag.RIGHT_LINE_TAG.rawValue
+        rightLine.frame = CGRect(x: self.frame.size.width - LINE_WIDTH, y: 0, width: LINE_WIDTH, height: self.frame.size.height)
+        self.addSubview(rightLine)
         
-        downLine = UIView();
-        downLine.frame = CGRect(x:0, y: self.frame.size.height - LINE_WIDTH, width: self.frame.size.width, height: LINE_WIDTH);
-        downLine.backgroundColor = UIColor.white;
-        self.addSubview(downLine);
-        downLine.tag = LyEditImageViewTag.DOWN_LINE_TAG.rawValue
+        downLine.frame = CGRect(x:0, y: self.frame.size.height - LINE_WIDTH, width: self.frame.size.width, height: LINE_WIDTH)
+        self.addSubview(downLine)
         
-        leftUpCornerPoint = UIView()
         leftUpCornerPoint.frame = CGRect(x: -5, y: -5, width: 10, height: 10)
-        leftUpCornerPoint.backgroundColor = UIColor.white
         self.addSubview(self.leftUpCornerPoint)
-        leftUpCornerPoint.tag = LyEditImageViewTag.LEFT_UP_TAG.rawValue
         
-        leftDownCornerPoint = UIView()
         leftDownCornerPoint.frame = CGRect(x: -5, y: self.frame.size.height - 5, width: 10, height: 10)
-        leftDownCornerPoint.backgroundColor = UIColor.white
         self.addSubview(self.leftDownCornerPoint)
-        leftDownCornerPoint.tag = LyEditImageViewTag.LEFT_DOWN_TAG.rawValue
         
-        rightUpCornerPoint = UIView()
         rightUpCornerPoint.frame = CGRect(x: self.frame.size.width - 5, y: -5, width: 10, height: 10)
-        rightUpCornerPoint.backgroundColor = UIColor.white
         self.addSubview(self.rightUpCornerPoint)
-        rightUpCornerPoint.tag = LyEditImageViewTag.RIGHT_UP_TAG.rawValue
-        
-        rightDownCornerPoint = UIView()
+
         rightDownCornerPoint.frame = CGRect(x: self.frame.size.width - 5, y: self.frame.size.height - 5, width: 10, height: 10)
-        rightDownCornerPoint.backgroundColor = UIColor.white
         self.addSubview(self.rightDownCornerPoint)
-        rightDownCornerPoint.tag = LyEditImageViewTag.RIGHT_DOWN_TAG.rawValue
     }
     
     // change subview's frame after cropview's constraints updated
@@ -128,7 +142,7 @@ class CropView: UIView {
        if let tag = hittedViewTag {
             return tag
         }
-        return 0;
+        return 0
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -140,9 +154,9 @@ class CropView: UIView {
     }
     
     func resetHightLightView() {
-        leftLine.frame = CGRect(x: 0, y: 0, width: LINE_WIDTH, height: self.frame.size.height);
-        upLine.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: LINE_WIDTH);
-        rightLine.frame = CGRect(x: self.frame.size.width - LINE_WIDTH, y: 0, width: LINE_WIDTH, height: self.frame.size.height);
-        downLine.frame = CGRect(x:0, y: self.frame.size.height - LINE_WIDTH, width: self.frame.size.width, height: LINE_WIDTH);
+        leftLine.frame = CGRect(x: 0, y: 0, width: LINE_WIDTH, height: self.frame.size.height)
+        upLine.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: LINE_WIDTH)
+        rightLine.frame = CGRect(x: self.frame.size.width - LINE_WIDTH, y: 0, width: LINE_WIDTH, height: self.frame.size.height)
+        downLine.frame = CGRect(x:0, y: self.frame.size.height - LINE_WIDTH, width: self.frame.size.width, height: LINE_WIDTH)
     }
 }

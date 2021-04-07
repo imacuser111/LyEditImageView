@@ -15,23 +15,37 @@ protocol LyEditImageViewDelegate: class {
 class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     private let INIT_CROP_VIEW_SIZE = 60
     private let MINIMAL_CROP_VIEW_SIZE: CGFloat = 30.0
-    var type = 0
+    private let type: Int
+    private var ratio: CGFloat?
     weak var delegate: LyEditImageViewDelegate?
     
     private let screenHeight = UIScreen.main.bounds.size.height
     private let screenWidth = UIScreen.main.bounds.size.width
     
-    var cropViewPanGesture: UIPanGestureRecognizer!
+    var cropViewPanGesture: UIPanGestureRecognizer = {
+        let cropViewPanGesture = UIPanGestureRecognizer()
+        cropViewPanGesture.cancelsTouchesInView = false
+        cropViewPanGesture.delaysTouchesBegan = false
+        cropViewPanGesture.delaysTouchesEnded = false
+        return cropViewPanGesture
+    }()
     
     var imageView = UIImageView()
-    var originImageViewFrame: CGRect!
+    var originImageViewFrame: CGRect = CGRect()
     var cropView = CropView()
-    let cropButton = UIButton()
+    let cropButton: UIButton = {
+        let cropButton = UIButton()
+        cropButton.setTitle("確定", for: .normal)
+        cropButton.setTitleColor(.black, for: .normal)
+        cropButton.layer.borderWidth = 2
+        cropButton.addTarget(self, action: #selector(acceptButtonAction), for: .touchUpInside)
+        return cropButton
+    }()
     
-    var cropLeftMargin: CGFloat!
-    var cropTopMargin: CGFloat!
-    var cropRightMargin: CGFloat!
-    var cropBottomMargin: CGFloat!
+    var cropLeftMargin: CGFloat = 0
+    var cropTopMargin: CGFloat = 0
+    var cropRightMargin: CGFloat = 0
+    var cropBottomMargin: CGFloat = 0
     var cropViewConstraints = [NSLayoutConstraint]()
     
     // MARK: init
@@ -43,8 +57,17 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         
         self.isMultipleTouchEnabled = true
     }
-
-    override init(frame: CGRect) {
+    
+    init(frame: CGRect, type: Int) {
+        self.type = type
+        switch type {
+        case typeValue.square.rawValue:
+            ratio = typeValue.square.value
+        case typeValue.rectangle.rawValue:
+            ratio = typeValue.rectangle.value
+        default:
+            break
+        }
         super.init(frame: frame)
     }
     
@@ -83,11 +106,7 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     }
     
     private func initGestureRecognizer() {
-        cropViewPanGesture = UIPanGestureRecognizer()
         cropViewPanGesture.addTarget(self, action: #selector(handlePanGesture(sender:)))
-        cropViewPanGesture.cancelsTouchesInView = false
-        cropViewPanGesture.delaysTouchesBegan = false
-        cropViewPanGesture.delaysTouchesEnded = false
         cropViewPanGesture.delegate = self
         cropView.addGestureRecognizer(cropViewPanGesture)
     }
@@ -101,11 +120,7 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         cropRightMargin = (CGFloat)(originImageViewFrame.size.width / 2) - (CGFloat)(INIT_CROP_VIEW_SIZE / 2) + (CGFloat)((screenWidth - originImageViewFrame.size.width) / 2)
         cropLeftMargin = cropRightMargin
         //type == 2 長方形 -> /3.125 因為寬高比1050*336 可自行調整，else 正方形
-        if type == 2 {
-            cropTopMargin = (CGFloat)(originImageViewFrame.size.height / 2) - (CGFloat)(Double(INIT_CROP_VIEW_SIZE) / 2 / 3.125) + (CGFloat)((screenHeight - originImageViewFrame.size.height) / 2)
-        } else {
-            cropTopMargin = (CGFloat)(originImageViewFrame.size.height / 2) - (CGFloat)(INIT_CROP_VIEW_SIZE / 2) + (CGFloat)((screenHeight - originImageViewFrame.size.height) / 2)
-        }
+        cropTopMargin = (CGFloat)(originImageViewFrame.size.height / 2) - (CGFloat)(Double(INIT_CROP_VIEW_SIZE) / 2 / Double(ratio ?? 0)) + (CGFloat)((screenHeight - originImageViewFrame.size.height) / 2)
         cropBottomMargin = cropTopMargin
         
         let views = ["cropView":cropView, "imageView":imageView] as [String : UIView]
@@ -125,11 +140,7 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     
     private func initButton() {
         cropButton.frame = CGRect(x: 10, y: screenHeight - 100, width: screenWidth - 20, height: 50)
-        cropButton.setTitle("確定", for: .normal)
-        cropButton.setTitleColor(.black, for: .normal)
-        cropButton.layer.borderWidth = 2
         cropButton.layer.cornerRadius = cropButton.frame.height / 10
-        cropButton.addTarget(self, action: #selector(acceptButtonAction), for: .touchUpInside)
         self.addSubview(cropButton)
     }
     
@@ -169,25 +180,17 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
             }
             //為了不要讓cropTopMargin在cropLeftMargin + translation.y <= imageView.frame.origin.x時繼續增加
             if cropLeftMargin + translation.y <= imageView.frame.origin.x && cropLeftMargin > imageView.frame.origin.x {
-                if type == 2 {
-                    cropTopMargin! -= (cropLeftMargin - imageView.frame.origin.x) / 3.125
-                } else {
-                    cropTopMargin! -= cropLeftMargin - imageView.frame.origin.x
-                }
-                cropLeftMargin! += translation.y
+                cropTopMargin -= (cropLeftMargin - imageView.frame.origin.x) / (ratio ?? 0)
+                cropLeftMargin += translation.y
                 break
             }
             //如果約束已經到imageView的最邊邊就不動作直接break掉
             if (cropLeftMargin <= imageView.frame.origin.x) && translation.y <= 0 {
                 break
             }
-            //type == 2 -> 長方形 3.125是因為寬高比1050*336 可自行調整，else 正方形
-            if type == 2 {
-                cropTopMargin! += translation.y / 3.125
-            } else {
-                cropTopMargin! += translation.y
-            }
-            cropLeftMargin! += translation.y
+            //type == 1 -> 長方形 3.125是因為寬高比1050*336 可自行調整，else 正方形
+            cropTopMargin += translation.y / (ratio ?? 0)
+            cropLeftMargin += translation.y
             break
         case LyEditImageViewTag.LEFT_DOWN_TAG.rawValue:
             //防止滑到超出imageView底部
@@ -200,23 +203,15 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
             }
             //
             if  cropLeftMargin + translation.x <= imageView.frame.origin.x && cropLeftMargin > imageView.frame.origin.x {
-                if type == 2 {
-                    cropBottomMargin! -= (cropLeftMargin - imageView.frame.origin.x) / 3.125
-                } else {
-                    cropBottomMargin! -= cropLeftMargin - imageView.frame.origin.x
-                }
-                cropLeftMargin! += translation.x
+                cropBottomMargin -= (cropLeftMargin - imageView.frame.origin.x) / (ratio ?? 0)
+                cropLeftMargin += translation.x
                 break
             }
             if (cropLeftMargin <= imageView.frame.origin.x || Int(cropBottomMargin) <= Int(imageView.frame.origin.y)) && translation.x <= 0 {
                 break
             }
-            if type == 2 {
-                cropBottomMargin! += translation.x / 3.125
-            } else {
-                cropBottomMargin! += translation.x
-            }
-            cropLeftMargin! += translation.x
+            cropBottomMargin += translation.x / (ratio ?? 0)
+            cropLeftMargin += translation.x
             break
         case LyEditImageViewTag.RIGHT_UP_TAG.rawValue:
             if translation.y + cropTopMargin < imageView.frame.origin.y {
@@ -226,23 +221,15 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
                 translation.y = screenHeight - (cropTopMargin + cropBottomMargin) - MINIMAL_CROP_VIEW_SIZE;
             }
             if  cropRightMargin + translation.y <= imageView.frame.origin.x && cropRightMargin > imageView.frame.origin.x {
-                if type == 2 {
-                    cropTopMargin! -= (cropRightMargin - imageView.frame.origin.x) / 3.125
-                } else {
-                    cropTopMargin! -= cropRightMargin - imageView.frame.origin.x
-                }
-                cropRightMargin! += translation.y
+                cropTopMargin -= (cropRightMargin - imageView.frame.origin.x) / (ratio ?? 0)
+                cropRightMargin += translation.y
                 break
             }
             if (cropRightMargin <= imageView.frame.origin.x) && translation.y <= 0 {
                 break
             }
-            if type == 2 {
-                cropTopMargin! += translation.y / 3.125
-            } else {
-                cropTopMargin! += translation.y
-            }
-            cropRightMargin! += translation.y
+            cropTopMargin += translation.y / (ratio ?? 0)
+            cropRightMargin += translation.y
             
             break
         case LyEditImageViewTag.RIGHT_DOWN_TAG.rawValue:
@@ -253,24 +240,16 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
                 translation.x = MINIMAL_CROP_VIEW_SIZE - (screenHeight - (cropTopMargin + cropBottomMargin))
             }
             if  cropRightMargin - translation.x <= imageView.frame.origin.x && cropRightMargin > imageView.frame.origin.x {
-                if type == 2 {
-                    cropBottomMargin! -= (cropRightMargin - imageView.frame.origin.x) / 3.125
-                } else {
-                    cropBottomMargin! -= cropRightMargin - imageView.frame.origin.x
-                }
-                cropRightMargin! -= translation.x
+                cropBottomMargin -= (cropRightMargin - imageView.frame.origin.x) / (ratio ?? 0)
+                cropRightMargin -= translation.x
                 break
             }
             
             if (cropRightMargin <= imageView.frame.origin.x || Int(cropBottomMargin) <= Int(imageView.frame.origin.y)) && translation.x >= 0 {
                 break
             }
-            if type == 2 {
-                cropBottomMargin! -= translation.x / 3.125
-            } else {
-                cropBottomMargin! -= translation.x
-            }
-            cropRightMargin! -= translation.x
+            cropBottomMargin -= translation.x / (ratio ?? 0)
+            cropRightMargin -= translation.x
             break
         default:
             panCropView(translation: translation)
@@ -299,10 +278,10 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     private func panCropView( translation: CGPoint) {
         var translation = translation
 
-        guard let right = cropRightMargin else { return }
-        guard let left = cropLeftMargin else { return }
-        guard let top = cropTopMargin else { return }
-        guard let bottom = cropBottomMargin else { return }
+        let right = cropRightMargin
+        let left = cropLeftMargin
+        let top = cropTopMargin
+        let bottom = cropBottomMargin
         
         if left + translation.x < imageView.frame.origin.x {
             translation.x = imageView.frame.origin.x - left
@@ -365,17 +344,28 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         let ratio = originImageViewFrame.size.width / (imageSize.width)
         let zoomedRect = CGRect(x: rect.origin.x / ratio, y: rect.origin.y / ratio, width: rect.size.width / ratio, height: rect.size.height / ratio)
         let croppedImage = CropImage.shared.cropImage(image: imageViewImage, rect: zoomedRect)
-    
-        if type == 2 {
-            saveImage(currentImage: croppedImage, newSize: CGSize(width: 1050, height: 336))
-        } else {
-            saveImage(currentImage: croppedImage, newSize: CGSize(width: 600, height: 600))
+        
+        switch type {
+        case typeValue.rectangle.rawValue:
+            if croppedImage.size.height > 1050 || croppedImage.size.width > 336 {
+                saveImage(currentImage: croppedImage, newSize: CGSize(width: 1050, height: 336), isExeed: true)
+            } else {
+                saveImage(currentImage: croppedImage)
+            }
+        case typeValue.square.rawValue:
+            if croppedImage.size.height > 600 || croppedImage.size.width > 600 {
+                saveImage(currentImage: croppedImage, newSize: CGSize(width: 600, height: 600), isExeed: true)
+            } else {
+                saveImage(currentImage: croppedImage)
+            }
+        default:
+            break
         }
     }
     
-    private func saveImage(currentImage: UIImage, newSize: CGSize) {
+    private func saveImage(currentImage: UIImage, newSize: CGSize = CGSize(), isExeed: Bool = false) {
         //設定新的image size
-        let newImage = currentImage.resize(targetSize: newSize)
+        let newImage = isExeed ? currentImage.resize(targetSize: newSize) : currentImage
         
         if let imageData = newImage.jpegData(compressionQuality: 1) {
             delegate?.buttonAction(image: UIImage(data: imageData) ?? UIImage())
