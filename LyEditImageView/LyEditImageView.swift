@@ -15,7 +15,7 @@ protocol LyEditImageViewDelegate: class {
 class LyEditImageView: UIView, UIGestureRecognizerDelegate {
     private let INIT_CROP_VIEW_SIZE = 60
     private let MINIMAL_CROP_VIEW_SIZE: CGFloat = 30.0
-    private let type: Int
+    private let type: CGFloat
     private var ratio: CGFloat?
     weak var delegate: LyEditImageViewDelegate?
     
@@ -58,16 +58,9 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         self.isMultipleTouchEnabled = true
     }
     
-    init(frame: CGRect, type: Int) {
+    init(frame: CGRect, type: CGFloat) {
         self.type = type
-        switch type {
-        case typeValue.square.rawValue:
-            ratio = typeValue.square.value
-        case typeValue.rectangle.rawValue:
-            ratio = typeValue.rectangle.value
-        default:
-            break
-        }
+        ratio = type
         super.init(frame: frame)
     }
     
@@ -346,13 +339,13 @@ class LyEditImageView: UIView, UIGestureRecognizerDelegate {
         let croppedImage = CropImage.shared.cropImage(image: imageViewImage, rect: zoomedRect)
         
         switch type {
-        case typeValue.rectangle.rawValue:
+        case typeValue.RECTANGLE.rawValue:
             if croppedImage.size.height > 1050 || croppedImage.size.width > 336 {
                 saveImage(currentImage: croppedImage, newSize: CGSize(width: 1050, height: 336), isExeed: true)
             } else {
                 saveImage(currentImage: croppedImage)
             }
-        case typeValue.square.rawValue:
+        case typeValue.SQUARE.rawValue:
             if croppedImage.size.height > 600 || croppedImage.size.width > 600 {
                 saveImage(currentImage: croppedImage, newSize: CGSize(width: 600, height: 600), isExeed: true)
             } else {

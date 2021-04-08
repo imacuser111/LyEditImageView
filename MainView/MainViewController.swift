@@ -39,7 +39,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func button(_ sender: Any) {
-        let vc = LyEditImageViewController(type: 0)
+        let vc = LyEditImageViewController(type: typeValue.SQUARE.rawValue)
         vc.delegate = self
         vc.imagePickerController.modalPresentationStyle = .fullScreen
         navigationController?.navigationBar.isTranslucent = true
@@ -48,7 +48,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func Btn(_ sender: Any) {
-        let vc = LyEditImageViewController(type: 1)
+        let vc = LyEditImageViewController(type: typeValue.RECTANGLE.rawValue)
         vc.delegate = self
         navigationController?.navigationBar.isTranslucent = true
         extendedLayoutIncludesOpaqueBars = false

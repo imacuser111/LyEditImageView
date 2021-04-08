@@ -19,16 +19,9 @@ enum LyEditImageViewTag: Int {
     case DOWN_LINE_TAG = 1108
 }
 
-enum typeValue: Int, CaseIterable {
-    case square = 0, rectangle
-    var value: CGFloat {
-        switch self {
-        case .square:
-            return 1
-        case .rectangle:
-            return 3.125
-        }
-    }
+enum typeValue: CGFloat {
+    case SQUARE = 1.0
+    case RECTANGLE = 3.125
 }
 
 class LyEditImageViewModel {

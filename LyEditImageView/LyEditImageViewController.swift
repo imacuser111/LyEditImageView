@@ -14,11 +14,11 @@ protocol ViewControllerDelegate: class {
 
 class LyEditImageViewController: UIViewController {
     let imagePickerController = UIImagePickerController()
-    private let type: Int
+    private let type: CGFloat
     var editView: LyEditImageView?
     weak var delegate: ViewControllerDelegate?
     
-    init(type: Int) {
+    init(type: CGFloat) {
         self.type = type
         super.init(nibName: nil, bundle: nil)
     }
