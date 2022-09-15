@@ -41,7 +41,6 @@ class MainViewController: UIViewController {
     @IBAction func button(_ sender: Any) {
         let vc = LyEditImageViewController(type: typeValue.SQUARE.rawValue)
         vc.delegate = self
-        vc.imagePickerController.modalPresentationStyle = .fullScreen
         navigationController?.navigationBar.isTranslucent = true
         extendedLayoutIncludesOpaqueBars = false
         navigationController?.pushViewController(vc, animated: false)
